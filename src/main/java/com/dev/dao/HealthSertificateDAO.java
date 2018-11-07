@@ -9,7 +9,7 @@ public interface HealthSertificateDAO {
 
     void update(HealthSertificate healthSertificate);
 
-    void delete(HealthSertificate healthSertificate);
+    void delete(int id);
 
     HealthSertificate getById(int id);
 

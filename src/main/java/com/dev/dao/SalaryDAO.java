@@ -9,7 +9,7 @@ public interface SalaryDAO {
 
     void update(Salary sallary);
 
-    void delete(Salary sallary);
+    void delete(int id);
 
     Salary getById(int id);
 

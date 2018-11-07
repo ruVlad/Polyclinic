@@ -41,8 +41,8 @@ public class PatientDAOImpl implements PatientDAO {
         jdbcTemplate.update(sql, patient.getName(), patient.getAge(), patient.getId());
     }
 
-    public void delete(Patient patient) {
-        jdbcTemplate.update("DELETE FROM patient WHERE id=?", patient.getId());
+    public void delete(int id) {
+        jdbcTemplate.update("DELETE FROM patient WHERE id=?", id);
     }
 
     public Patient getById(int id) {

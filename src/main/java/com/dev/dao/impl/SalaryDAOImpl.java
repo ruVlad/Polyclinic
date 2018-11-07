@@ -41,8 +41,8 @@ public class SalaryDAOImpl implements SalaryDAO {
         jdbcTemplate.update(sql, salary.getIdDoctor(), salary.getSum(), salary.getId());
     }
 
-    public void delete(Salary salary) {
-        jdbcTemplate.update("DELETE FROM salary WHERE id=?", salary.getId());
+    public void delete(int id) {
+        jdbcTemplate.update("DELETE FROM salary WHERE id=?", id);
     }
 
     public Salary getById(int id) {

@@ -43,8 +43,8 @@ public class DiseasesDAOImpl implements DiseasesDAO {
 
     }
 
-    public void delete(Diseases diseases) {
-        jdbcTemplate.update("DELETE FROM diseases WHERE id=?", diseases.getId());
+    public void delete(int id) {
+        jdbcTemplate.update("DELETE FROM diseases WHERE id=?", id);
     }
 
     public Diseases getById(int id) {

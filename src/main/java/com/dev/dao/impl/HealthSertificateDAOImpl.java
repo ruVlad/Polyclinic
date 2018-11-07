@@ -48,8 +48,8 @@ public class HealthSertificateDAOImpl implements HealthSertificateDAO {
                 healthSertificate.getDateOfIssue(), healthSertificate.getExpiryDate(), healthSertificate.getId());
     }
 
-    public void delete(HealthSertificate healthSertificate) {
-        jdbcTemplate.update("DELETE FROM health_sertificate WHERE id=?", healthSertificate.getId());
+    public void delete(int id) {
+        jdbcTemplate.update("DELETE FROM health_sertificate WHERE id=?", id);
     }
 
     public HealthSertificate getById(int id) {

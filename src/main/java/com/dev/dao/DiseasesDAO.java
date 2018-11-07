@@ -9,7 +9,7 @@ public interface DiseasesDAO {
 
     void update(Diseases diseases);
 
-    void delete(Diseases diseases);
+    void delete(int id);
 
     Diseases getById(int id);
 
