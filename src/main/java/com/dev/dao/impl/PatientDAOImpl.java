@@ -1,55 +1,108 @@
 package com.dev.dao.impl;
 
-import com.dev.dao.PatientDAO;
-import com.dev.entity.Patient;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Repository;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+import com.dev.dao.DoctorDAO;
+import com.dev.dao.PatientDAO;
+import com.dev.entity.Doctor;
+import com.dev.entity.Patient;
+import com.dev.util.DBUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.print.Doc;
+
 public class PatientDAOImpl implements PatientDAO {
 
-    public final JdbcTemplate jdbcTemplate;
+    private Connection conn;
 
-    @Autowired
-    public PatientDAOImpl(JdbcTemplate jdbcTemplate){
-        this.jdbcTemplate = jdbcTemplate;
+
+    public PatientDAOImpl() {
+        conn = DBUtil.getConnection();
     }
-
-    private RowMapper<Patient> rowMapper = new RowMapper<Patient>() {
-        public Patient mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Patient patient = new Patient();
-            patient.setId(rs.getInt("id"));
-            patient.setName(rs.getString("name"));
-            patient.setAge(rs.getInt("age"));
-            return patient;
+    @Override
+    public void insert( Patient patient) {
+        try {
+            String query = "insert into patient (name, age) values (?,?)";
+            PreparedStatement preparedStatement = conn.prepareStatement( query );
+            preparedStatement.setString( 1, patient.getName() );
+            preparedStatement.setInt( 2, patient.getAge() );
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    };
-
-    public void insert(Patient patient) {
-        String sql = "INSERT INTO patient(name, age) VALUES(?,?)";
-        jdbcTemplate.update(sql, patient.getName(), patient.getAge());
     }
-
-    public void update(Patient patient) {
-        String sql = "UPDATE patient SET name=?, ahe=? WHERE id=?";
-        jdbcTemplate.update(sql, patient.getName(), patient.getAge(), patient.getId());
+    @Override
+    public void delete( int id ) {
+        try {
+            String query = "delete from patient where id=?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-
-    public void delete(int id) {
-        jdbcTemplate.update("DELETE FROM patient WHERE id=?", id);
+    @Override
+    public void update( Patient patient) {
+        try {
+            String query = "update patient set name=?, age=? where id=?";
+            PreparedStatement preparedStatement = conn.prepareStatement( query );
+            preparedStatement.setString( 1, patient.getName() );
+            preparedStatement.setInt( 2, patient.getAge() );
+            preparedStatement.setInt(3, patient.getId());
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-
-    public Patient getById(int id) {
-        return jdbcTemplate.queryForObject("SELECT * FROM patient WHERE id=?", rowMapper, id);
-    }
-
+    @Override
     public List<Patient> getAll() {
-        return jdbcTemplate.query("SELECT * FROM patient", rowMapper);
+        List<Patient> patients = new ArrayList<Patient>();
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery( "select * from patient" );
+            while( resultSet.next() ) {
+                Patient patient = new Patient();
+                patient.setId( resultSet.getInt( "id" ) );
+                patient.setName( resultSet.getString( "name" ) );
+                patient.setAge( resultSet.getInt( "age" ) );
+                patients.add(patient);
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return patients;
     }
+    @Override
+    public Patient getById(int id) {
+        Patient patient = new Patient();
+        try {
+            String query = "select * from doctor where id=?";
+            PreparedStatement preparedStatement = conn.prepareStatement( query );
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while( resultSet.next() ) {
+                patient.setId( resultSet.getInt( "id" ) );
+                patient.setName( resultSet.getString( "name" ) );
+                patient.setAge( resultSet.getInt( "age" ) );
+            }
+            resultSet.close();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return patient;
+    }
+
 }

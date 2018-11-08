@@ -8,11 +8,47 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
     <servlet>
-        <servlet-name>PolyclinicController</servlet-name>
-        <servlet-class>com.dev.controller.PolyclinicController</servlet-class>
+        <servlet-name>DiseasesController</servlet-name>
+        <servlet-class>com.dev.controller.DiseasesController</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>PolyclinicController</servlet-name>
-        <url-pattern>/PolyclinicController.do</url-pattern>
+        <servlet-name>DiseasesController</servlet-name>
+        <url-pattern>/DiseasesController.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>HealthSertificateController</servlet-name>
+        <servlet-class>com.dev.controller.HealthSertificateController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HealthSertificateController</servlet-name>
+        <url-pattern>/HealthSertificateController.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SalaryController</servlet-name>
+        <servlet-class>com.dev.controller.SalaryController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SalaryController</servlet-name>
+        <url-pattern>/SalaryController.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>PatientController</servlet-name>
+        <servlet-class>com.dev.controller.PatientController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PatientController</servlet-name>
+        <url-pattern>/PatientController.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DoctorController</servlet-name>
+        <servlet-class>com.dev.controller.DoctorController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DoctorController</servlet-name>
+        <url-pattern>/DoctorController.do</url-pattern>
     </servlet-mapping>
 </web-app>

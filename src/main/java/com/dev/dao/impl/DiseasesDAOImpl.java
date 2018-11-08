@@ -1,57 +1,108 @@
 package com.dev.dao.impl;
 
-import com.dev.dao.DiseasesDAO;
-import com.dev.entity.Diseases;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Repository;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.dev.dao.DiseasesDAO;
+import com.dev.dao.DoctorDAO;
+import com.dev.entity.Diseases;
+import com.dev.entity.Doctor;
+import com.dev.util.DBUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Repository
+import javax.print.Doc;
+
 public class DiseasesDAOImpl implements DiseasesDAO {
 
-    public final JdbcTemplate jdbcTemplate;
+    private Connection conn;
 
-    @Autowired
-    public DiseasesDAOImpl(JdbcTemplate jdbcTemplate){
-        this.jdbcTemplate = jdbcTemplate;
+
+    public DiseasesDAOImpl() {
+        conn = DBUtil.getConnection();
     }
-
-    private RowMapper<Diseases> rowMapper = new RowMapper<Diseases>() {
-        public Diseases mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Diseases diseases = new Diseases();
-            diseases.setId(rs.getInt("id"));
-            diseases.setName(rs.getString("name"));
-            diseases.setComment(rs.getString("comment"));
-            return diseases;
+    @Override
+    public void insert( Diseases diseases) {
+        try {
+            String query = "insert into diseases (name, comment) values (?,?)";
+            PreparedStatement preparedStatement = conn.prepareStatement( query );
+            preparedStatement.setString( 1, diseases.getName() );
+            preparedStatement.setString( 2, diseases.getComment() );
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    };
-
-    public void insert(Diseases diseases) {
-        String sql = "INSERT INTO diseases(name, comment) VALUES(?,?)";
-        jdbcTemplate.update(sql, diseases.getName(), diseases.getComment());
     }
-
-    public void update(Diseases diseases) {
-        String sql = "UPDATE diseases SET name=?, comment=? WHERE id=?";
-        jdbcTemplate.update(sql, diseases.getName(), diseases.getComment(), diseases.getId());
-
+    @Override
+    public void delete( int id ) {
+        try {
+            String query = "delete from diseases where id=?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-
-    public void delete(int id) {
-        jdbcTemplate.update("DELETE FROM diseases WHERE id=?", id);
+    @Override
+    public void update( Diseases diseases) {
+        try {
+            String query = "update diseases set name=?, comment=? where id=?";
+            PreparedStatement preparedStatement = conn.prepareStatement( query );
+            preparedStatement.setString( 1, diseases.getName() );
+            preparedStatement.setString( 2, diseases.getComment() );
+            preparedStatement.setInt( 3, diseases.getId() );
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-
-    public Diseases getById(int id) {
-        return jdbcTemplate.queryForObject("SELECT * FROM diseases WHERE id=?", rowMapper, id);
-    }
-
+    @Override
     public List<Diseases> getAll() {
-        return jdbcTemplate.query("SELECT * FROM diseases", rowMapper);
+        List<Diseases> diseases= new ArrayList<Diseases>();
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery( "select * from diseases" );
+            while( resultSet.next() ) {
+                Diseases disease= new Diseases();
+                disease.setId( resultSet.getInt( "id" ) );
+                disease.setName( resultSet.getString( "name" ) );
+                disease.setComment( resultSet.getString( "comment" ) );
+                diseases.add(disease);
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return diseases;
     }
+    @Override
+    public Diseases getById(int id) {
+        Diseases diseases = new Diseases();
+        try {
+            String query = "select * from diseases where id=?";
+            PreparedStatement preparedStatement = conn.prepareStatement( query );
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while( resultSet.next() ) {
+                diseases.setId( resultSet.getInt( "id" ) );
+                diseases.setName( resultSet.getString( "name" ) );
+                diseases.setComment( resultSet.getString( "comment" ) );
+            }
+            resultSet.close();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return diseases;
+    }
+
 }

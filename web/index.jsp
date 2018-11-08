@@ -7,6 +7,6 @@
   <title>Welcome</title>
 </head>
 <body>
-<jsp:forward page="/PolyclinicController?action=listDoctor"></jsp:forward>
+<jsp:forward page="/DoctorController?action=listDoctor"></jsp:forward>
 </body>
 </html>

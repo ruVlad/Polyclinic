@@ -5,43 +5,41 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>Show All Doctors</title>
+    <title>Show All Salary</title>
 </head>
 <body>
 <ul>
-    <li>Doctors</li>
+    <li><a href="DoctorController?action=listDoctor" class="active">Doctors</a></li>
     <li><a href="DiseasesController?action=listDiseases">Diseases</a></li>
     <li><a href="HealthSertificateController?action=listHealthSertificate">Health Sertificates</a></li>
     <li><a href="PatientController?action=listPatient">Patients</a></li>
-    <li><a href="SalaryController?action=listSalary">Salaries</a></li>
+    <li>Salaries</li>
 </ul>
 <table>
     <thead>
     <tr>
+        <th>Salary ID</th>
         <th>Doctor ID</th>
-        <th>Name</th>
-        <th>Age</th>
-        <th>Email</th>
+        <th>Sum</th>
         <th colspan="2">Action</th>
     </tr>
     </thead>
     <tbody>
-    <c:forEach items="${doctors}" var="doctor">
+    <c:forEach items="${salaries}" var="salary">
         <tr>
-            <td><c:out value="${doctor.id}" /></td>
-            <td><c:out value="${doctor.name}" /></td>
-            <td><c:out value="${doctor.age}" /></td>
-            <td><c:out value="${doctor.email}" /></td>
+            <td><c:out value="${salary.id}" /></td>
+            <td><c:out value="${salary.idDoctor}" /></td>
+            <td><c:out value="${patient.sum}" /></td>
             <td><a
-                    href="DoctorController.do?action=edit&id=<c:out value="${doctor.id }"/>">Update</a></td>
+                    href="SalaryController.do?action=edit&id=<c:out value="${salary.id }"/>">Update</a></td>
             <td><a
-                    href="DoctorController.do?action=delete&id=<c:out value="${doctor.id}"/>">Delete</a></td>
+                    href="SalaryController.do?action=delete&id=<c:out value="${salary.id}"/>">Delete</a></td>
         </tr>
     </c:forEach>
     </tbody>
 </table>
 <p>
-    <a href="DoctorController.do?action=insert">Add Doctor</a>
+    <a href="SalaryController.do?action=insert">Add Salary</a>
 </p>
 </body>
 </html>

@@ -5,12 +5,12 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>Show All Doctors</title>
+    <title>Show All Diseases</title>
 </head>
 <body>
 <ul>
-    <li>Doctors</li>
-    <li><a href="DiseasesController?action=listDiseases">Diseases</a></li>
+    <li><a href="DoctorController?action=listDoctor">Doctors</a></li>
+    <li>Diseases</li>
     <li><a href="HealthSertificateController?action=listHealthSertificate">Health Sertificates</a></li>
     <li><a href="PatientController?action=listPatient">Patients</a></li>
     <li><a href="SalaryController?action=listSalary">Salaries</a></li>
@@ -18,30 +18,28 @@
 <table>
     <thead>
     <tr>
-        <th>Doctor ID</th>
+        <th>Disease ID</th>
         <th>Name</th>
-        <th>Age</th>
-        <th>Email</th>
+        <th>Comment</th>
         <th colspan="2">Action</th>
     </tr>
     </thead>
     <tbody>
-    <c:forEach items="${doctors}" var="doctor">
+    <c:forEach items="${diseases}" var="disease">
         <tr>
-            <td><c:out value="${doctor.id}" /></td>
-            <td><c:out value="${doctor.name}" /></td>
-            <td><c:out value="${doctor.age}" /></td>
-            <td><c:out value="${doctor.email}" /></td>
+            <td><c:out value="${disease.id}" /></td>
+            <td><c:out value="${disease.name}" /></td>
+            <td><c:out value="${disease.comment}" /></td>
             <td><a
-                    href="DoctorController.do?action=edit&id=<c:out value="${doctor.id }"/>">Update</a></td>
+                    href="DiseasesController.do?action=edit&id=<c:out value="${disease.id }"/>">Update</a></td>
             <td><a
-                    href="DoctorController.do?action=delete&id=<c:out value="${doctor.id}"/>">Delete</a></td>
+                    href="DiseasesController.do?action=delete&id=<c:out value="${disease.id}"/>">Delete</a></td>
         </tr>
     </c:forEach>
     </tbody>
 </table>
 <p>
-    <a href="DoctorController.do?action=insert">Add Doctor</a>
+    <a href="DiseasesController.do?action=insert">Add Disease</a>
 </p>
 </body>
 </html>

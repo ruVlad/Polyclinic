@@ -1,62 +1,120 @@
 package com.dev.dao.impl;
 
-import com.dev.dao.HealthSertificateDAO;
-import com.dev.entity.HealthSertificate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Repository;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+import com.dev.dao.DoctorDAO;
+import com.dev.dao.HealthSertificateDAO;
+import com.dev.entity.Doctor;
+import com.dev.entity.HealthSertificate;
+import com.dev.util.DBUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.print.Doc;
+
 public class HealthSertificateDAOImpl implements HealthSertificateDAO {
 
-    public final JdbcTemplate jdbcTemplate;
+    private Connection conn;
 
-    @Autowired
-    public HealthSertificateDAOImpl(JdbcTemplate jdbcTemplate){
-        this.jdbcTemplate = jdbcTemplate;
+
+    public HealthSertificateDAOImpl() {
+        conn = DBUtil.getConnection();
     }
-
-
-
-    private RowMapper<HealthSertificate> rowMapper = new RowMapper<HealthSertificate>() {
-        public HealthSertificate mapRow(ResultSet rs, int rowNum) throws SQLException {
-            HealthSertificate healthSertificate = new HealthSertificate();
-            healthSertificate.setId(rs.getInt("id"));
-            healthSertificate.setIdDiseases(rs.getInt("id_diseases"));
-            healthSertificate.setIdDoctor(rs.getInt("id_doctor"));
-            healthSertificate.setIdPatient(rs.getInt("id_patient"));
-            healthSertificate.setDateOfIssue(rs.getString("date_of_issue"));
-            healthSertificate.setExpiryDate(rs.getString("expiry_date"));
-            return healthSertificate;
+    @Override
+    public void insert( HealthSertificate healthSertificate) {
+        try {
+            String query = "insert into health_sertificate (id_diseases, id_doctor, id_patient, date_of_issue, expiry_date) values (?,?,?,?,?)";
+            PreparedStatement preparedStatement = conn.prepareStatement( query );
+            preparedStatement.setInt( 1, healthSertificate.getIdDiseases() );
+            preparedStatement.setInt( 2, healthSertificate.getIdDoctor() );
+            preparedStatement.setInt( 3, healthSertificate.getIdPatient() );
+            preparedStatement.setString( 4, healthSertificate.getDateOfIssue() );
+            preparedStatement.setString( 5, healthSertificate.getExpiryDate() );
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    };
-
-    public void insert(HealthSertificate healthSertificate) {
-        String sql = "INSERT INTO health_sertificate(id_diseases, id_doctor, id_patient, date_of_issue, expiry_date) VALUES(?,?,?,?,?)";
-        jdbcTemplate.update(sql, healthSertificate.getIdDiseases(), healthSertificate.getIdDoctor(), healthSertificate.getIdPatient(),
-                healthSertificate.getDateOfIssue(), healthSertificate.getExpiryDate());
     }
-
-    public void update(HealthSertificate healthSertificate) {
-        String sql = "UPDATE health_sertificate SET id_diseases=?, id_doctor=?, id_patient=?, date_of_issue=?, expiry_date=? WHERE id=?";
-        jdbcTemplate.update(sql, healthSertificate.getIdDiseases(), healthSertificate.getIdDoctor(), healthSertificate.getIdPatient(),
-                healthSertificate.getDateOfIssue(), healthSertificate.getExpiryDate(), healthSertificate.getId());
+    @Override
+    public void delete( int id ) {
+        try {
+            String query = "delete from health_sertificate where id=?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-
-    public void delete(int id) {
-        jdbcTemplate.update("DELETE FROM health_sertificate WHERE id=?", id);
+    @Override
+    public void update( HealthSertificate healthSertificate) {
+        try {
+            String query = "update health_sertificate set id_diseases=?, id_doctor=?, id_patient=?, date_of_issue=?, expiry_date=? where id=?";
+            PreparedStatement preparedStatement = conn.prepareStatement( query );
+            preparedStatement.setInt( 1, healthSertificate.getIdDiseases() );
+            preparedStatement.setInt( 2, healthSertificate.getIdDoctor() );
+            preparedStatement.setInt( 3, healthSertificate.getIdPatient() );
+            preparedStatement.setString( 4, healthSertificate.getDateOfIssue() );
+            preparedStatement.setString( 5, healthSertificate.getExpiryDate() );
+            preparedStatement.setInt(6, healthSertificate.getId());
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-
-    public HealthSertificate getById(int id) {
-        return jdbcTemplate.queryForObject("SELECT * FROM health_sertificate WHERE id=?", rowMapper, id);
-    }
-
+    @Override
     public List<HealthSertificate> getAll() {
-        return jdbcTemplate.query("SELECT * FROM health_sertificate", rowMapper);
+        List<HealthSertificate> healthSertificates = new ArrayList<HealthSertificate>();
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery( "select * from health_sertificate" );
+            while( resultSet.next() ) {
+                HealthSertificate healthSertificate= new HealthSertificate();
+                healthSertificate.setId( resultSet.getInt( "id" ) );
+                healthSertificate.setIdDiseases( resultSet.getInt( "id_diseases" ) );
+                healthSertificate.setIdDoctor( resultSet.getInt( "id_doctor" ) );
+                healthSertificate.setIdPatient( resultSet.getInt( "id_patient" ) );
+                healthSertificate.setDateOfIssue( resultSet.getString( "date_of_issue" ) );
+                healthSertificate.setExpiryDate( resultSet.getString( "expiry_date" ) );
+                healthSertificates.add(healthSertificate);
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return healthSertificates;
     }
+    @Override
+    public HealthSertificate getById(int id) {
+        HealthSertificate healthSertificate= new HealthSertificate();
+        try {
+            String query = "select * from health_sertificate where id=?";
+            PreparedStatement preparedStatement = conn.prepareStatement( query );
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while( resultSet.next() ) {
+                healthSertificate.setId( resultSet.getInt( "id" ) );
+                healthSertificate.setIdDiseases( resultSet.getInt( "id_diseases" ) );
+                healthSertificate.setIdDoctor( resultSet.getInt( "id_doctor" ) );
+                healthSertificate.setIdPatient( resultSet.getInt( "id_patient" ) );
+                healthSertificate.setDateOfIssue( resultSet.getString( "date_of_issue" ) );
+                healthSertificate.setExpiryDate( resultSet.getString( "expiry_date" ) );
+            }
+            resultSet.close();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return healthSertificate;
+    }
+
 }

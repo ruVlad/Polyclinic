@@ -1,6 +1,7 @@
 package com.dev.service.impl;
 
 import com.dev.dao.SalaryDAO;
+import com.dev.dao.impl.SalaryDAOImpl;
 import com.dev.entity.Salary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import java.util.List;
 public class SalaryServiceImpl implements SalaryService {
 
     @Autowired
-    public SalaryDAO salaryDAO;
+    public SalaryDAO salaryDAO = new SalaryDAOImpl();
 
     @Override
     public void insert(Salary salary) {

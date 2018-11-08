@@ -1,55 +1,110 @@
 package com.dev.dao.impl;
 
-import com.dev.dao.SalaryDAO;
-import com.dev.entity.Salary;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Repository;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+import com.dev.dao.DoctorDAO;
+import com.dev.dao.PatientDAO;
+import com.dev.dao.SalaryDAO;
+import com.dev.entity.Doctor;
+import com.dev.entity.Patient;
+import com.dev.entity.Salary;
+import com.dev.util.DBUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.print.Doc;
+
 public class SalaryDAOImpl implements SalaryDAO {
 
-    public final JdbcTemplate jdbcTemplate;
+    private Connection conn;
 
-    @Autowired
-    public SalaryDAOImpl(JdbcTemplate jdbcTemplate){
-        this.jdbcTemplate = jdbcTemplate;
+
+    public SalaryDAOImpl() {
+        conn = DBUtil.getConnection();
     }
-
-    private RowMapper<Salary> rowMapper = new RowMapper<Salary>() {
-        public Salary mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Salary salary = new Salary();
-            salary.setId(rs.getInt("id"));
-            salary.setIdDoctor(rs.getInt("id_doctor"));
-            salary.setSum(rs.getInt("sum"));
-            return salary;
+    @Override
+    public void insert( Salary salary) {
+        try {
+            String query = "insert into salary (id_doctor, sum) values (?,?)";
+            PreparedStatement preparedStatement = conn.prepareStatement( query );
+            preparedStatement.setInt( 1, salary.getIdDoctor() );
+            preparedStatement.setInt( 2, salary.getSum() );
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    };
-
-    public void insert(Salary salary) {
-        String sql = "INSERT INTO salary(id_doctor, sum) VALUES(?,?)";
-        jdbcTemplate.update(sql, salary.getIdDoctor(), salary.getSum());
     }
-
-    public void update(Salary salary) {
-        String sql = "UPDATE salary SET id_doctor=?, sum=? WHERE id=?";
-        jdbcTemplate.update(sql, salary.getIdDoctor(), salary.getSum(), salary.getId());
+    @Override
+    public void delete( int id ) {
+        try {
+            String query = "delete from salary where id=?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-
-    public void delete(int id) {
-        jdbcTemplate.update("DELETE FROM salary WHERE id=?", id);
+    @Override
+    public void update( Salary salary) {
+        try {
+            String query = "update salary set id_doctor=?, sum=? where id=?";
+            PreparedStatement preparedStatement = conn.prepareStatement( query );
+            preparedStatement.setInt( 1, salary.getIdDoctor() );
+            preparedStatement.setInt( 2, salary.getSum() );
+            preparedStatement.setInt(3, salary.getId());
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-
-    public Salary getById(int id) {
-        return jdbcTemplate.queryForObject("SELECT * FROM salary WHERE id=?", rowMapper, id);
-    }
-
+    @Override
     public List<Salary> getAll() {
-        return jdbcTemplate.query("SELECT * FROM salary", rowMapper);
+        List<Salary> salaries = new ArrayList<Salary>();
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery( "select * from salary" );
+            while( resultSet.next() ) {
+                Salary salary = new Salary();
+                salary.setId( resultSet.getInt( "id" ) );
+                salary.setIdDoctor( resultSet.getInt( "name" ) );
+                salary.setSum( resultSet.getInt( "age" ) );
+                salaries.add(salary);
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return salaries;
     }
+    @Override
+    public Salary getById(int id) {
+        Salary salary = new Salary();
+        try {
+            String query = "select * from salary where id=?";
+            PreparedStatement preparedStatement = conn.prepareStatement( query );
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while( resultSet.next() ) {
+                salary.setId( resultSet.getInt( "id" ) );
+                salary.setIdDoctor( resultSet.getInt( "name" ) );
+                salary.setSum( resultSet.getInt( "age" ) );
+            }
+            resultSet.close();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return salary;
+    }
+
 }

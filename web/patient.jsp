@@ -6,36 +6,28 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
-    <title>Add New Doctor</title>
+    <title>Add New Patient</title>
 </head>
 <body>
-
-
-<form action="DoctorController.do" method="post">
+<form action="PatientController.do" method="post">
     <fieldset>
         <div>
-            <%--@declare id="id"--%><label for="id">Doctor ID</label>
+            <%--@declare id="id"--%><label for="id">Patient ID</label>
             <input type="text"
-                   name="id" value="<c:out value="${doctor.id}" />"
-                   readonly="readonly" placeholder="Doctor ID"/>
+                   name="id" value="<c:out value="${patient.id}" />"
+                   readonly="readonly" placeholder="Patient ID"/>
         </div>
         <div>
             <%--@declare id="name"--%><label for="name">Name</label>
             <input type="text"
-                   name="name" value="<c:out value="${doctor.name}" />"
+                   name="name" value="<c:out value="${patient.name}" />"
                    placeholder="Name"/>
         </div>
         <div>
             <%--@declare id="age"--%><label for="age">Age</label>
             <input type="text"
-                   name="age" value="<c:out value="${doctor.age}" />"
+                   name="age" value="<c:out value="${patient.age}" />"
                    placeholder="Age"/>
-        </div>
-        <div>
-            <%--@declare id="email"--%><label for="email">Email</label>
-            <input type="text"
-                   name="email"
-                   value="<c:out value="${doctor.email}" />" placeholder="Email"/>
         </div>
         <div>
             <input type="submit" value="Submit"/>

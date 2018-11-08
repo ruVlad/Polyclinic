@@ -1,6 +1,7 @@
 package com.dev.service.impl;
 
 import com.dev.dao.PatientDAO;
+import com.dev.dao.impl.PatientDAOImpl;
 import com.dev.entity.Patient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import java.util.List;
 public class PatientServiceImpl implements PatientService {
 
     @Autowired
-    public PatientDAO patientDAO;
+    public PatientDAO patientDAO = new PatientDAOImpl();
 
     @Override
     public void insert(Patient patient) {

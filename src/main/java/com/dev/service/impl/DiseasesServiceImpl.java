@@ -1,6 +1,7 @@
 package com.dev.service.impl;
 
 import com.dev.dao.DiseasesDAO;
+import com.dev.dao.impl.DiseasesDAOImpl;
 import com.dev.entity.Diseases;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,8 +12,7 @@ import java.util.List;
 @Service
 public class DiseasesServiceImpl implements DiseasesService {
 
-    @Autowired
-    public DiseasesDAO diseasesDAO;
+    public DiseasesDAO diseasesDAO = new DiseasesDAOImpl();
 
     @Override
     public void insert(Diseases diseases) {

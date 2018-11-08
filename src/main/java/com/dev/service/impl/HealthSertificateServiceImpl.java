@@ -1,6 +1,7 @@
 package com.dev.service.impl;
 
 import com.dev.dao.HealthSertificateDAO;
+import com.dev.dao.impl.HealthSertificateDAOImpl;
 import com.dev.entity.HealthSertificate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import java.util.List;
 @Service
 public class HealthSertificateServiceImpl implements HealthSertificateService {
     @Autowired
-    public HealthSertificateDAO healthSertificateDAO;
+    public HealthSertificateDAO healthSertificateDAO = new HealthSertificateDAOImpl();
 
     @Override
     public void insert(HealthSertificate healthSertificate) {

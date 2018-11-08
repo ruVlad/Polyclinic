@@ -2,8 +2,11 @@ package com.dev.controller;
 
 import com.dev.dao.DoctorDAO;
 import com.dev.dao.impl.DoctorDAOImpl;
+import com.dev.entity.Diseases;
 import com.dev.entity.Doctor;
+import com.dev.service.DiseasesService;
 import com.dev.service.DoctorService;
+import com.dev.service.impl.DiseasesServiceImpl;
 import com.dev.service.impl.DoctorServiceImpl;
 import com.dev.util.DBUtil;
 
@@ -16,17 +19,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
-@WebServlet("/PolyclinicController")
-public class PolyclinicController extends HttpServlet {
+@WebServlet("/DiseasesController")
+public class DiseasesController extends HttpServlet {
 
-    private DoctorService doctorService;   //service
-   // private DoctorDAO doctorService;
+    private DiseasesService diseasesService;
     private static final long serialVersionUID = 1L;
-    public static final String LIST_DOCTOR = "/listDoctor.jsp";
-    public static final String INSERT_OR_EDIT = "/doctor.jsp";
+    public static final String LIST_DOCTOR = "/listDiseases.jsp";
+    public static final String INSERT_OR_EDIT = "/diseases.jsp";
 
-    public PolyclinicController() {
-        doctorService = new DoctorServiceImpl();
+    public DiseasesController() {
+        diseasesService = new DiseasesServiceImpl();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -36,41 +38,40 @@ public class PolyclinicController extends HttpServlet {
         if( action.equalsIgnoreCase( "delete" ) ) {
             forward = LIST_DOCTOR;
             int id = Integer.parseInt( request.getParameter("id") );
-            doctorService.delete(id);
-            request.setAttribute("doctors", doctorService.getAll());
+            diseasesService.delete(id);
+            request.setAttribute("diseasess", diseasesService.getAll());
         }
         else if( action.equalsIgnoreCase( "edit" ) ) {
             forward = INSERT_OR_EDIT;
             int id = Integer.parseInt( request.getParameter("id") );
-            Doctor doctor = doctorService.getById(id);
-            request.setAttribute("doctor", doctor);
+            Diseases diseases = diseasesService.getById(id);
+            request.setAttribute("diseases", diseases);
         }
         else if( action.equalsIgnoreCase( "insert" ) ) {
             forward = INSERT_OR_EDIT;
         }
         else {
             forward = LIST_DOCTOR;
-            request.setAttribute("doctors", doctorService.getAll() );
+            request.setAttribute("diseases", diseasesService.getAll() );
         }
         RequestDispatcher view = request.getRequestDispatcher( forward );
         view.forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Doctor doctor= new Doctor();
-        doctor.setName( request.getParameter( "name" ) );
-        doctor.setAge( Integer.parseInt(request.getParameter( "age" )) );
-        doctor.setEmail( request.getParameter( "email" ) );
+        Diseases diseases = new Diseases();
+        diseases.setName( request.getParameter( "name" ) );
+        diseases.setComment(request.getParameter( "comment" ));
         String id = request.getParameter("id");
 
         if( id == null || id.isEmpty() )
-            doctorService.insert(doctor);
+            diseasesService.insert(diseases);
         else {
-            doctor.setId( Integer.parseInt(id) );
-            doctorService.update(doctor);
+            diseases.setId( Integer.parseInt(id) );
+            diseasesService.update(diseases);
         }
         RequestDispatcher view = request.getRequestDispatcher( LIST_DOCTOR );
-        request.setAttribute("doctors", doctorService.getAll());
+        request.setAttribute("diseases", diseasesService.getAll());
         view.forward(request, response);
     }
 }
