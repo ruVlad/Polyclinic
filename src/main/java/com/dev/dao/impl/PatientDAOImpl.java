@@ -1,21 +1,12 @@
 package com.dev.dao.impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.dev.dao.DoctorDAO;
 import com.dev.dao.PatientDAO;
-import com.dev.entity.Doctor;
 import com.dev.entity.Patient;
 import com.dev.util.DBUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.print.Doc;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PatientDAOImpl implements PatientDAO {
 
@@ -25,21 +16,23 @@ public class PatientDAOImpl implements PatientDAO {
     public PatientDAOImpl() {
         conn = DBUtil.getConnection();
     }
+
     @Override
-    public void insert( Patient patient) {
+    public void insert(Patient patient) {
         try {
             String query = "insert into patient (name, age) values (?,?)";
-            PreparedStatement preparedStatement = conn.prepareStatement( query );
-            preparedStatement.setString( 1, patient.getName() );
-            preparedStatement.setInt( 2, patient.getAge() );
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, patient.getName());
+            preparedStatement.setInt(2, patient.getAge());
             preparedStatement.executeUpdate();
             preparedStatement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
     @Override
-    public void delete( int id ) {
+    public void delete(int id) {
         try {
             String query = "delete from patient where id=?";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
@@ -50,13 +43,14 @@ public class PatientDAOImpl implements PatientDAO {
             e.printStackTrace();
         }
     }
+
     @Override
-    public void update( Patient patient) {
+    public void update(Patient patient) {
         try {
             String query = "update patient set name=?, age=? where id=?";
-            PreparedStatement preparedStatement = conn.prepareStatement( query );
-            preparedStatement.setString( 1, patient.getName() );
-            preparedStatement.setInt( 2, patient.getAge() );
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, patient.getName());
+            preparedStatement.setInt(2, patient.getAge());
             preparedStatement.setInt(3, patient.getId());
             preparedStatement.executeUpdate();
             preparedStatement.close();
@@ -64,17 +58,18 @@ public class PatientDAOImpl implements PatientDAO {
             e.printStackTrace();
         }
     }
+
     @Override
     public List<Patient> getAll() {
         List<Patient> patients = new ArrayList<Patient>();
         try {
             Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery( "select * from patient" );
-            while( resultSet.next() ) {
+            ResultSet resultSet = statement.executeQuery("select * from patient");
+            while (resultSet.next()) {
                 Patient patient = new Patient();
-                patient.setId( resultSet.getInt( "id" ) );
-                patient.setName( resultSet.getString( "name" ) );
-                patient.setAge( resultSet.getInt( "age" ) );
+                patient.setId(resultSet.getInt("id"));
+                patient.setName(resultSet.getString("name"));
+                patient.setAge(resultSet.getInt("age"));
                 patients.add(patient);
             }
             resultSet.close();
@@ -84,18 +79,19 @@ public class PatientDAOImpl implements PatientDAO {
         }
         return patients;
     }
+
     @Override
     public Patient getById(int id) {
         Patient patient = new Patient();
         try {
             String query = "select * from doctor where id=?";
-            PreparedStatement preparedStatement = conn.prepareStatement( query );
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while( resultSet.next() ) {
-                patient.setId( resultSet.getInt( "id" ) );
-                patient.setName( resultSet.getString( "name" ) );
-                patient.setAge( resultSet.getInt( "age" ) );
+            while (resultSet.next()) {
+                patient.setId(resultSet.getInt("id"));
+                patient.setName(resultSet.getString("name"));
+                patient.setAge(resultSet.getInt("age"));
             }
             resultSet.close();
             preparedStatement.close();

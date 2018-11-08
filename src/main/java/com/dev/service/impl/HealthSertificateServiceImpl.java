@@ -3,9 +3,9 @@ package com.dev.service.impl;
 import com.dev.dao.HealthSertificateDAO;
 import com.dev.dao.impl.HealthSertificateDAOImpl;
 import com.dev.entity.HealthSertificate;
+import com.dev.service.HealthSertificateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.dev.service.HealthSertificateService;
 
 import java.util.List;
 

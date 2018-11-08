@@ -5,6 +5,7 @@ import com.dev.entity.Salary;
 import java.util.List;
 
 public interface SalaryDAO {
+
     void insert(Salary sallary);
 
     void update(Salary sallary);

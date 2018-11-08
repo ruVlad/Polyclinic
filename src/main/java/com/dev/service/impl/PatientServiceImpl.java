@@ -3,9 +3,9 @@ package com.dev.service.impl;
 import com.dev.dao.PatientDAO;
 import com.dev.dao.impl.PatientDAOImpl;
 import com.dev.entity.Patient;
+import com.dev.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.dev.service.PatientService;
 
 import java.util.List;
 

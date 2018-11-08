@@ -3,11 +3,11 @@ package com.dev.service.impl;
 import com.dev.dao.DoctorDAO;
 import com.dev.dao.impl.DoctorDAOImpl;
 import com.dev.entity.Doctor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.dev.service.DoctorService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class DoctorServiceImpl implements DoctorService {
 

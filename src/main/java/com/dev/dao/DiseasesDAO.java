@@ -5,6 +5,7 @@ import com.dev.entity.Diseases;
 import java.util.List;
 
 public interface DiseasesDAO {
+
     void insert(Diseases diseases);
 
     void update(Diseases diseases);

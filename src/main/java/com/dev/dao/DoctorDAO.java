@@ -5,6 +5,7 @@ import com.dev.entity.Doctor;
 import java.util.List;
 
 public interface DoctorDAO {
+
     void insert(Doctor doctor);
 
     void update(Doctor doctor);

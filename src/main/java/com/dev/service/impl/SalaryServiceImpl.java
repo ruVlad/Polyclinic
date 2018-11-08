@@ -3,9 +3,9 @@ package com.dev.service.impl;
 import com.dev.dao.SalaryDAO;
 import com.dev.dao.impl.SalaryDAOImpl;
 import com.dev.entity.Salary;
+import com.dev.service.SalaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.dev.service.SalaryService;
 
 import java.util.List;
 

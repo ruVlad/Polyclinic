@@ -5,6 +5,7 @@ import com.dev.entity.HealthSertificate;
 import java.util.List;
 
 public interface HealthSertificateDAO {
+
     void insert(HealthSertificate healthSertificate);
 
     void update(HealthSertificate healthSertificate);

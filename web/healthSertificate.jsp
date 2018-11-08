@@ -9,6 +9,68 @@
     <title>Add New Health Sertificate</title>
 </head>
 <body>
+<style>
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+    }
+
+    li {
+        float: left;
+    }
+
+    li a {
+        display: block;
+        color: white;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    li a:hover:not(.active) {
+        background-color: #111;
+    }
+
+    .active {
+        background-color: #4CAF50;
+    }
+
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #111;
+        color: white;
+        text-align: center;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:hover {
+        background-color: #f2f2f2
+    }
+
+    th {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    fieldset {
+        color: white;
+        background-color: #333;
+    }
+</style>
 <form action="HealthSertificateController.do" method="post">
     <fieldset>
         <div>
@@ -37,11 +99,11 @@
                    placeholder="ID Patient"/>
         </div>
         <div>
-        <%--@declare id="date_of_issue"--%><label for="date_of_issue">Date of Issue</label>
-        <input type="text"
-               name="date_of_issue"
-               value="<c:out value="${health_sertificate.dateOfIssue}" />"
-               placeholder="Date Of Issue"/>
+            <%--@declare id="date_of_issue"--%><label for="date_of_issue">Date of Issue</label>
+            <input type="text"
+                   name="date_of_issue"
+                   value="<c:out value="${health_sertificate.dateOfIssue}" />"
+                   placeholder="Date Of Issue"/>
         </div>
         <div>
             <%--@declare id="expiry_date"--%><label for="expiry_date">Expiry Date</label>
