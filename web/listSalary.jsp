@@ -86,7 +86,7 @@
         <tr>
             <td><c:out value="${salary.id}"/></td>
             <td><c:out value="${salary.idDoctor}"/></td>
-            <td><c:out value="${patient.sum}"/></td>
+            <td><c:out value="${salary.sum}"/></td>
             <td><a
                     href="SalaryController.do?action=edit&id=<c:out value="${salary.id }"/>">Update</a></td>
             <td><a

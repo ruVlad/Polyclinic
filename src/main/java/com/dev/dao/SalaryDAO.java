@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface SalaryDAO {
 
-    void insert(Salary sallary);
+    void insert(Salary salary);
 
-    void update(Salary sallary);
+    void update(Salary salary);
 
     void delete(int id);
 

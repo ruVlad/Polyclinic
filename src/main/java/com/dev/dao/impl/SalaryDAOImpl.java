@@ -68,8 +68,8 @@ public class SalaryDAOImpl implements SalaryDAO {
             while (resultSet.next()) {
                 Salary salary = new Salary();
                 salary.setId(resultSet.getInt("id"));
-                salary.setIdDoctor(resultSet.getInt("name"));
-                salary.setSum(resultSet.getInt("age"));
+                salary.setIdDoctor(resultSet.getInt("id_doctor"));
+                salary.setSum(resultSet.getInt("sum"));
                 salaries.add(salary);
             }
             resultSet.close();
@@ -90,8 +90,8 @@ public class SalaryDAOImpl implements SalaryDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 salary.setId(resultSet.getInt("id"));
-                salary.setIdDoctor(resultSet.getInt("name"));
-                salary.setSum(resultSet.getInt("age"));
+                salary.setIdDoctor(resultSet.getInt("id_doctor"));
+                salary.setSum(resultSet.getInt("sum"));
             }
             resultSet.close();
             preparedStatement.close();

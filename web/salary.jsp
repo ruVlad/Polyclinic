@@ -81,16 +81,16 @@
                    readonly="readonly" placeholder="Salary ID"/>
         </div>
         <div>
-            <%--@declare id="name"--%><label for="name">Doctor ID</label>
+            <%--@declare id="id_doctor"--%><label for="id_doctor">Doctor ID</label>
             <input type="text"
                    name="id_doctor" value="<c:out value="${salary.idDoctor}" />"
                    placeholder="Doctor ID"/>
         </div>
         <div>
-            <%--@declare id="age"--%><label for="age">Sum</label>
+            <%--@declare id="sum"--%><label for="sum">Sum</label>
             <input type="text"
                    name="sum" value="<c:out value="${salary.sum}" />"
-                   placeholder="Saum"/>
+                   placeholder="Sum"/>
         </div>
         <div>
             <input type="submit" value="Submit"/>

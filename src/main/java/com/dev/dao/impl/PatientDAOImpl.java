@@ -84,7 +84,7 @@ public class PatientDAOImpl implements PatientDAO {
     public Patient getById(int id) {
         Patient patient = new Patient();
         try {
-            String query = "select * from doctor where id=?";
+            String query = "select * from patient where id=?";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
